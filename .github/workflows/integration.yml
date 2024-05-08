@@ -20,7 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
-    if: contains(github.event.pull_request.labels.*.name, 'integration')
+    # if: contains(github.event.pull_request.labels.*.name, 'integration')
     steps:
-    - name: pull_request_target
-      run: echo "${{ github.event.pull_request }}"
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo $JSON
+        env:
+          JSON: ${{ toJSON(github) }}
