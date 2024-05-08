@@ -23,4 +23,4 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'integration')
     steps:
     - name: pull_request_target
-      run: echo "${{ github.event.pul_request }}"
+      run: echo "${{ github.event.pull_request }}"
