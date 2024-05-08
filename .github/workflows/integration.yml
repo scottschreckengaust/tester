@@ -14,11 +14,6 @@ on:
       - review_requested
     branches:
       - 'main'
-    inputs:
-      fail:
-        description: 'Force failure'
-        default: false
-        type: boolean
 
 jobs:
   integration:
@@ -27,11 +22,6 @@ jobs:
       pull-requests: read
     if: contains(github.event.pull_request.labels.*.name, 'integration')
     steps:
-    # Runs a single command using the runners shell
-    - name: Failure
-      if: ${{ inputs.fail == true }}
-      run: echo "Failure" && exit 1
-    - name: Success
+    - name: pull_request_target
       if: ${{ inputs.fail != true }}
-      run: echo "Success" && exit 0
-      
+      run: echo "${{ github.event.pul_request }}"
