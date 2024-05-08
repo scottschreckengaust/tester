@@ -1,0 +1,37 @@
+# This is a basic workflow that is manually triggered
+
+name: integration_test
+
+on:
+  pull_request_target:
+    types:
+      - labeled
+      - unlabeled
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - review_requested
+    branches:
+      - 'main'
+    inputs:
+      fail:
+        description: 'Force failure'
+        default: false
+        type: boolean
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    if: contains(github.event.pull_request.labels.*.name, 'integration')
+    steps:
+    # Runs a single command using the runners shell
+    - name: Failure
+      if: ${{ inputs.fail == true }}
+      run: echo "Failure" && exit 1
+    - name: Success
+      if: ${{ inputs.fail != true }}
+      run: echo "Success" && exit 0
+      
