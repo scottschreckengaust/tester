@@ -1,0 +1,48 @@
+on:
+  workflow_dispatch:
+    inputs:
+      externalId:
+        type: string
+        options:
+          - '0'
+          - '1'
+        required: true
+        description: the external id
+        default: '0'  
+name: test
+run-name: The best "${{ inputs.externalId }}" ever
+defaults:
+  run:
+    shell: bash
+    working-directory: .
+concurrency: 
+  group: github.job
+  cancel-in-progress: true
+env:
+  externalId: inputs.externalId
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: onesy    
+    outputs:
+      job-status: ${{ job.status }}
+    steps:
+      - id: alpha
+        name: alphy
+        run: exit ${{ fromJSON(inputs.externalId) }}
+  job2:
+    runs-on: ubuntu-latest
+    name: twosy
+    steps:
+      - id: beta
+        name: bety
+        run: exit 0
+    needs: job1
+  job3:
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs: [job1, job2]
+    steps:
+      - id: gamma
+        name: gammy
+        run: echo "${{ github.job }}"
