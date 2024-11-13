@@ -22,4 +22,7 @@ jobs:
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           which brew
+          brew update
+          brew install lolcat
+          echo "Hello world" | lolcat 
           exit 0
