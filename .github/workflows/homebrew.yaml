@@ -1,0 +1,25 @@
+on:
+  workflow_dispatch: {}
+name: homebrew
+run-name: homebrew
+defaults:
+  run:
+    shell: bash
+    working-directory: .
+concurrency: 
+  group: github.job
+  cancel-in-progress: true
+permissions: read-all
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: running-homebrew
+    outputs:
+      job-status: ${{ job.status }}
+    steps:
+      - id: find
+        name: find
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          which brew
+          exit 0
